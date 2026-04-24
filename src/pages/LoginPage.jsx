@@ -1,12 +1,29 @@
+import { useNavigate, Navigate } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
 import logo from "../assets/logo.jpg";
+import { getAdmin } from "../utils/auth";
+import { useEffect } from "react";
 
 function LoginPage() {
-  const handleLogin = (user) => {
-    console.log("Admin logged in:", user);
-    // TODO: redirect to admin dashboard or store auth state
-  };
+  const navigate = useNavigate();
 
+  const admin = getAdmin();
+
+  useEffect(() => {
+    if (admin) {
+      navigate("/dashboard", { replace: true });
+      console.log("done");
+    } else {
+      console.log("no");
+    }
+  }, [admin, navigate]);
+
+  const handleLogin = (user) => {
+    localStorage.setItem("admin", JSON.stringify(user.admin));
+    localStorage.setItem("token", user.token);
+
+    navigate("/dashboard", { replace: true });
+  };
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 px-4">
       {/* Decorative background elements */}
