@@ -36,21 +36,20 @@ function Sidebar({ onClose }) {
     </p>
   );
 
+  const NavItem = ({ to, icon, label }) => {
+    const match = useMatch({ path: to, end: true });
 
-const NavItem = ({ to, icon, label }) => {
-  const match = useMatch({ path: to, end: true });
-
-  return (
-    <NavLink
-      to={to}
-      onClick={onClose}
-      className={`${baseLink} ${match ? activeLink : ""}`}
-    >
-      <span className="text-base">{icon}</span>
-      <span>{label}</span>
-    </NavLink>
-  );
-};
+    return (
+      <NavLink
+        to={to}
+        onClick={onClose}
+        className={`${baseLink} ${match ? activeLink : ""}`}
+      >
+        <span className="text-base">{icon}</span>
+        <span>{label}</span>
+      </NavLink>
+    );
+  };
 
   const handleLogout = () => {
     const token = localStorage.getItem("token");
@@ -112,6 +111,7 @@ const NavItem = ({ to, icon, label }) => {
         {/* 📊 Admin Panel */}
         <SectionTitle icon="📊" label="Admin Panel" />
         <NavItem to="/dashboard" icon="📈" label="Dashboard Overview" />
+        <NavItem to="/profile" icon="👤" label="Admin Profile" />
 
         {/* 👤 Customer Section */}
         <SectionTitle icon="👤" label="Customer Section" />
