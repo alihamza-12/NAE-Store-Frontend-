@@ -5,9 +5,21 @@ const Navbar = ({ admin, onMenuToggle }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("admin");
-    localStorage.removeItem("token");
-    navigate("/", { replace: true });
+    const token = localStorage.getItem("token");
+
+    fetch("http://localhost:3000/admin/logout", {
+      method: "POST",
+
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .catch(() => {})
+      .finally(() => {
+        localStorage.removeItem("admin");
+        localStorage.removeItem("token");
+        navigate("/", { replace: true });
+      });
   };
 
   return (
