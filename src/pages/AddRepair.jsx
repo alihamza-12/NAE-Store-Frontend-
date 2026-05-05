@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createRepair } from "../../api/lcd-repairs";
 
 function AddRepair() {
   const [form, setForm] = useState({
@@ -27,24 +28,13 @@ function AddRepair() {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
-
-      const res = await fetch("http://localhost:3000/lcd-repairs", {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-
-        body: JSON.stringify({
-          ...form,
-          repairingPrice: Number(form.repairingPrice),
-          advance: Number(form.advance || 0),
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to create");
+      const payload = {
+        ...form,
+        repairingPrice: Number(form.repairingPrice),
+        advance: Number(form.advance || 0),
+      };
+      //calling api for to create repair
+      const data = await createRepair(payload);
 
       setMessage(`Repair created! Job No: ${data.repair?.jobNo || ""}`);
       setForm({
