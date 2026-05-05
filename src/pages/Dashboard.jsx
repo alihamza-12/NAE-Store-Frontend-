@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { lcdRepair } from "../../api/lcd-repairs";
 
 function Dashboard() {
   const [stats, setStats] = useState({
@@ -11,14 +12,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    fetch("http://localhost:3000/lcd-repairs", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
+    lcdRepair()
       .then((data) => {
         const repairs = Array.isArray(data) ? data : data.repairs || [];
         setStats({
