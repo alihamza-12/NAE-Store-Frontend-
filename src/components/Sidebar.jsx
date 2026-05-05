@@ -1,29 +1,22 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useMatch } from "react-router-dom";
+import { lcdRepair } from "../../api/lcd-repairs";
+import { logout } from "../../api/auth";
 
 function Sidebar({ onClose }) {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ total: 0, pending: 0, completed: 0 });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    fetch("http://localhost:3000/lcd-repairs", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const repairs = Array.isArray(data) ? data : data.repairs || [];
-        setStats({
-          total: repairs.length,
-          pending: repairs.filter((r) => r.status === "Pending").length,
-          completed: repairs.filter((r) => r.status === "Completed").length,
-        });
-      })
-      .catch(() => {});
+    lcdRepair().then((data) => {
+      const repairs = Array.isArray(data) ? data : data.repairs || [];
+      setStats({
+        total: repairs.length,
+        pending: repairs.filter((r) => r.status === "Pending").length,
+        completed: repairs.filter((r) => r.status === "Completed").length,
+      });
+    });
   }, []);
 
   const baseLink =
@@ -51,22 +44,9 @@ function Sidebar({ onClose }) {
     );
   };
 
-  const handleLogout = () => {
-    const token = localStorage.getItem("token");
-
-    fetch("http://localhost:3000/admin/logout", {
-      method: "POST",
-
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .catch(() => {})
-      .finally(() => {
-        localStorage.removeItem("admin");
-        localStorage.removeItem("token");
-        navigate("/", { replace: true });
-      });
+  const handleLogout = async () => {
+    await logout()
+    navigate("/", { replace: true });
   };
 
   return (

@@ -1,25 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg";
+import { logout } from "../../api/auth";
 
 const Navbar = ({ admin, onMenuToggle }) => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    const token = localStorage.getItem("token");
-
-    fetch("http://localhost:3000/admin/logout", {
-      method: "POST",
-
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .catch(() => {})
-      .finally(() => {
-        localStorage.removeItem("admin");
-        localStorage.removeItem("token");
-        navigate("/", { replace: true });
-      });
+  const handleLogout =async () => {
+    await logout()
+    navigate("/", { replace: true })
   };
 
   return (

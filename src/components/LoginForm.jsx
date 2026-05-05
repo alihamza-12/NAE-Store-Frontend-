@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Alert from "@mui/material/Alert";
+import { login } from "../../api/auth";
 
 function LoginForm({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -19,27 +20,11 @@ function LoginForm({ onLogin }) {
 
     setLoading(true);
 
-    try {
-      const response = await fetch("http://localhost:3000/admin/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Invalid admin credentials.");
-        return;
-      }
-
-      onLogin?.(data);
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
-    } finally {
+    const data = await login({ email, password }).finally(() => {
       setLoading(false);
+    });
+    if (data) {
+      onLogin?.(data);
     }
   };
 
