@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { lcdRepair } from "../../api/lcd-repairs";
 
 function AllCustomers() {
   const [customers, setCustomers] = useState([]);
@@ -15,15 +16,8 @@ function AllCustomers() {
     setLoading(true);
     setError("");
     try {
-      const token = localStorage.getItem("token");
+      const data =await lcdRepair();
 
-      const res = await fetch("http://localhost:3000/lcd-repairs", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch");
       const repairs = Array.isArray(data) ? data : data.repairs || [];
 
       // Extract unique customers by phone number
