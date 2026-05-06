@@ -21,3 +21,9 @@ export async function updateLcdRepair(id, data) {
 export async function adminProfile() {
   return await makeRequest("/admin/profile");
 }
+
+export async function searchLcdRepairs(query) {
+  return await makeRequest(
+    `/lcd-repairs/search?query=${encodeURIComponent(query)}`,
+  );
+}
