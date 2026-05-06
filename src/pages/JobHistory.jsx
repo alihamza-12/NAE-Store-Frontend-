@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { lcdRepair } from "../../api/lcd-repairs";
 
 function JobHistory() {
   const [repairs, setRepairs] = useState([]);
@@ -15,15 +16,8 @@ function JobHistory() {
     setLoading(true);
     setError("");
     try {
-      const token = localStorage.getItem("token");
+      const data = await lcdRepair();
 
-      const res = await fetch("http://localhost:3000/lcd-repairs", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch");
       const list = Array.isArray(data) ? data : data.repairs || [];
       // Sort by receivedDate descending (newest first)
       const sorted = list.sort(
