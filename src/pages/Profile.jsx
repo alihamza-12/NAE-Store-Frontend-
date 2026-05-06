@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { adminProfile } from "../../api/lcd-repairs";
 
 function Profile() {
   const [admin, setAdmin] = useState(null);
@@ -8,15 +9,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        const res = await fetch("http://localhost:3000/admin/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Failed to fetch profile");
+        const data = await adminProfile();
         setAdmin(data.admin || data);
       } catch (err) {
         setError(err.message);

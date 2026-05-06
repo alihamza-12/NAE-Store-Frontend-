@@ -17,3 +17,7 @@ export async function updateLcdRepair(id, data) {
     data,
   });
 }
+
+export async function adminProfile() {
+  return await makeRequest("/admin/profile");
+}
