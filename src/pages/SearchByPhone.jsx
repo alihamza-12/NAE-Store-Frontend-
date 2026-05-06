@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { searchLcdRepairs } from "../../api/lcd-repairs";
 
 function SearchByPhone() {
   const [phone, setPhone] = useState("");
@@ -16,19 +17,8 @@ function SearchByPhone() {
     setLoading(true);
     setSearched(true);
     try {
-      const token = localStorage.getItem("token");
+      const data = await searchLcdRepairs(phone);
 
-      const res = await fetch(
-        `http://localhost:3000/lcd-repairs/search?query=${encodeURIComponent(
-          phone,
-        )}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const data = await res.json();
       setResults(Array.isArray(data) ? data : data.repairs || []);
     } catch {
       setResults([]);
