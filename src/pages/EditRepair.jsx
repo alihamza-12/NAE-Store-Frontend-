@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { lcdRepair, updateLcdRepair } from "../../api/lcd-repairs";
 
 function EditRepair() {
   const [searchJobNo, setSearchJobNo] = useState("");
@@ -24,15 +25,8 @@ function EditRepair() {
     setRepair(null);
 
     try {
-      const token = localStorage.getItem("token");
+      const data = await lcdRepair();
 
-      const res = await fetch("http://localhost:3000/lcd-repairs", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
       const repairs = Array.isArray(data) ? data : data.repairs || [];
 
       const found = repairs.find(
@@ -64,27 +58,14 @@ function EditRepair() {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
+      const payload = {
+        status: repair.status,
+        repairingPrice: Number(repair.repairingPrice),
+        advance: Number(repair.advance),
+        issueDescription: repair.issueDescription,
+      };
+      const data = await updateLcdRepair(repair._id, payload);
 
-      const res = await fetch(
-        `http://localhost:3000/lcd-repairs/${repair._id}`,
-        {
-          method: "PATCH",
-
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            status: repair.status,
-            repairingPrice: Number(repair.repairingPrice),
-            advance: Number(repair.advance),
-            issueDescription: repair.issueDescription,
-          }),
-        },
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Update failed");
       setMessage("Repair updated successfully!");
       setRepair(data.repair || data);
     } catch (err) {

@@ -11,4 +11,9 @@ export async function createRepair(data) {
   });
 }
 
-
+export async function updateLcdRepair(id, data) {
+  return await makeRequest(`/lcd-repairs/${id}`, {
+    method: "PATCH",
+    data,
+  });
+}
