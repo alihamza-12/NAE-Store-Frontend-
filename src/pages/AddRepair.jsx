@@ -164,7 +164,7 @@ function AddRepair() {
             </select>
           </div>
           <div>
-            <label className={labelClass}>Repairing Price (₹)</label>
+            <label className={labelClass}>Repairing Price (Rs)</label>
             <input
               name="repairingPrice"
               type="number"
@@ -177,7 +177,7 @@ function AddRepair() {
             />
           </div>
           <div>
-            <label className={labelClass}>Advance (₹)</label>
+            <label className={labelClass}>Advance (Rs)</label>
             <input
               name="advance"
               type="number"
