@@ -69,8 +69,8 @@ function DeliveredJobs() {
                   <td className="px-4 py-3">{r.customerName}</td>
                   <td className="px-4 py-3">{r.phoneNo}</td>
                   <td className="px-4 py-3">{r.brand}</td>
-                  <td className="px-4 py-3">₹{r.repairingPrice}</td>
-                  <td className="px-4 py-3">₹{r.advance}</td>
+                  <td className="px-4 py-3">Rs.{r.repairingPrice}</td>
+                  <td className="px-4 py-3">Rs.{r.advance}</td>
                   <td className="px-4 py-3 text-red-300">₹{r.leftMoney}</td>
                   <td className="px-4 py-3 text-xs">
                     {r.receivedDate
