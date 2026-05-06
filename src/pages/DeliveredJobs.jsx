@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { lcdRepair } from "../../api/lcd-repairs";
 
 function DeliveredJobs() {
   const [repairs, setRepairs] = useState([]);
@@ -13,18 +14,8 @@ function DeliveredJobs() {
     setLoading(true);
     setError("");
     try {
-      const token = localStorage.getItem("token");
-
-      const res = await fetch(
-        "http://localhost:3000/lcd-repairs?status=Delivered",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch");
+      const data = await lcdRepair();
+  
       setRepairs(Array.isArray(data) ? data : data.repairs || []);
     } catch (err) {
       setError(err.message);
