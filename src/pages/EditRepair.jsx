@@ -127,13 +127,112 @@ function EditRepair() {
           onSubmit={handleUpdate}
           className="space-y-5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-5 md:p-8"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 text-xs font-medium border border-blue-500/40">
-              {repair.jobNo}
-            </span>
-            <span className="text-sm text-blue-300/60">
-              {repair.customerName} — {repair.phoneNo}
-            </span>
+          {/* Non-editable Repair Details */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 text-xs font-medium border border-blue-500/40">
+                {repair.jobNo || "—"}
+              </span>
+              <span className="text-sm text-blue-300/60">
+                {repair.customerName || "—"} — {repair.phoneNo || "—"}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <span className={labelClass}>Model No</span>
+                <div className={`${inputClass} bg-white/5 text-blue-100`}>
+                  {repair.modelNo || "—"}
+                </div>
+              </div>
+              <div>
+                <span className={labelClass}>Serial No</span>
+                <div className={`${inputClass} bg-white/5 text-blue-100`}>
+                  {repair.serialNo || "—"}
+                </div>
+              </div>
+              <div>
+                <span className={labelClass}>Brand</span>
+                <div className={`${inputClass} bg-white/5 text-blue-100`}>
+                  {repair.brand || "—"}
+                </div>
+              </div>
+              <div>
+                <span className={labelClass}>Customer</span>
+                <div className={`${inputClass} bg-white/5 text-blue-100`}>
+                  {repair.customerName || "—"}
+                </div>
+              </div>
+              <div>
+                <span className={labelClass}>Phone</span>
+                <div className={`${inputClass} bg-white/5 text-blue-100`}>
+                  {repair.phoneNo || "—"}
+                </div>
+              </div>
+              <div>
+                <span className={labelClass}>Issue</span>
+                <div className={`${inputClass} bg-white/5 text-blue-100`}>
+                  {repair.issueDescription || "—"}
+                </div>
+              </div>
+              <div>
+                <span className={labelClass}>Created At</span>
+                <div
+                  className={`${inputClass} bg-white/5 text-blue-100 text-xs`}
+                >
+                  {repair.createdAt
+                    ? new Date(repair.createdAt).toLocaleString("en-GB", {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true,
+                      })
+                    : "—"}
+                </div>
+              </div>
+              <div>
+                <span className={labelClass}>Updated At</span>
+                <div
+                  className={`${inputClass} bg-white/5 text-blue-100 text-xs`}
+                >
+                  {repair.updatedAt
+                    ? new Date(repair.updatedAt).toLocaleString("en-GB", {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true,
+                      })
+                    : "—"}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <span className={labelClass}>Repairing Price</span>
+                <div className={`${inputClass} bg-white/5 text-blue-100`}>
+                  {repair.repairingPrice ?? "—"}
+                </div>
+              </div>
+              <div>
+                <span className={labelClass}>Advance</span>
+                <div className={`${inputClass} bg-white/5 text-blue-100`}>
+                  {repair.advance ?? "—"}
+                </div>
+              </div>
+              <div className="md:col-span-2">
+                <span className={labelClass}>Left Money</span>
+                <div className={`${inputClass} bg-white/5 text-red-300`}>
+                  Rs.
+                  {Number(repair.repairingPrice || 0) -
+                    Number(repair.advance || 0)}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
