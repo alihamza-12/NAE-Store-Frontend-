@@ -16,7 +16,7 @@ function AllCustomers() {
     setLoading(true);
     setError("");
     try {
-      const data =await lcdRepair();
+      const data = await lcdRepair();
 
       const repairs = Array.isArray(data) ? data : data.repairs || [];
 
@@ -101,7 +101,11 @@ function AllCustomers() {
                     {r.receivedDate || r.createdAt
                       ? new Date(
                           r.receivedDate || r.createdAt,
-                        ).toLocaleDateString()
+                        ).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                        })
                       : "—"}
                   </td>
                 </tr>
