@@ -84,13 +84,19 @@ function SearchRepair() {
           <table className="w-full text-left text-sm">
             <thead className="bg-white/5 text-blue-300 uppercase text-xs tracking-wider">
               <tr>
-                <th className="px-4 py-3 font-medium">Job No</th>
+                <th className="px-4 py-3 font-medium">Model No</th>
+                <th className="px-4 py-3 font-medium">Serial No</th>
+                <th className="px-4 py-3 font-medium">Brand</th>
                 <th className="px-4 py-3 font-medium">Customer</th>
                 <th className="px-4 py-3 font-medium">Phone</th>
-                <th className="px-4 py-3 font-medium">Brand</th>
-                <th className="px-4 py-3 font-medium">Price</th>
-                <th className="px-4 py-3 font-medium">Left</th>
+                <th className="px-4 py-3 font-medium">Repairing Price</th>
+                <th className="px-4 py-3 font-medium">Advance</th>
+                <th className="px-4 py-3 font-medium">Left Money</th>
+                <th className="px-4 py-3 font-medium">Issue</th>
                 <th className="px-4 py-3 font-medium">Status</th>
+                <th className="px-4 py-3 font-medium">Job No</th>
+                <th className="px-4 py-3 font-medium">Created At</th>
+                <th className="px-4 py-3 font-medium">Updated At</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -100,20 +106,50 @@ function SearchRepair() {
                   onClick={() => navigate(`/repairs/edit/${r.jobNo}`)}
                   className="rounded-xl bg-white/5 border border-white/10 p-4 md:p-5 cursor-pointer transition-all duration-200 hover:bg-white/10 hover:border-white/20"
                 >
-                  <td className="px-4 py-3 font-mono text-xs">{r.jobNo}</td>
-                  <td className="px-4 py-3">{r.customerName}</td>
-                  <td className="px-4 py-3">{r.phoneNo}</td>
-                  <td className="px-4 py-3">{r.brand}</td>
-                  <td className="px-4 py-3">Rs.{r.repairingPrice}</td>
-                  <td className="px-4 py-3 text-red-300">Rs.{r.leftMoney}</td>
+                  <td className="px-4 py-3">{r.modelNo || "—"}</td>
+                  <td className="px-4 py-3">{r.serialNo || "—"}</td>
+                  <td className="px-4 py-3">{r.brand || "—"}</td>
+                  <td className="px-4 py-3 font-medium">
+                    {r.customerName || "—"}
+                  </td>
+                  <td className="px-4 py-3">{r.phoneNo || "—"}</td>
+                  <td className="px-4 py-3">{r.repairingPrice ?? "—"}</td>
+                  <td className="px-4 py-3">{r.advance ?? "—"}</td>
+                  <td className="px-4 py-3">{r.leftMoney ?? "—"}</td>
+                  <td className="px-4 py-3">{r.issueDescription || "—"}</td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusColor(
-                        r.status,
-                      )}`}
-                    >
-                      {r.status}
+                    <span className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-200 border border-blue-500/40">
+                      {r.status || "—"}
                     </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-200 border border-blue-500/40">
+                      {r.jobNo || "—"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-xs">
+                    {r.createdAt
+                      ? new Date(r.createdAt).toLocaleString("en-GB", {
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                          hour12: true,
+                        })
+                      : "—"}
+                  </td>
+                  <td className="px-4 py-3 text-xs">
+                    {r.updatedAt
+                      ? new Date(r.updatedAt).toLocaleString("en-GB", {
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                          hour12: true,
+                        })
+                      : "—"}
                   </td>
                 </tr>
               ))}
