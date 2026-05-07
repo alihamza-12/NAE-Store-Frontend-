@@ -2,6 +2,80 @@ import { useState } from "react";
 import { createRepair } from "../../api/lcd-repairs";
 
 function AddRepair() {
+  const openPrintWindow = (repair) => {
+  const printWindow = window.open("", "_blank", "width=900,height=700");
+
+  if (!printWindow) {
+    alert("Please allow popups for printing");
+    return;
+  }
+
+  const leftMoney =
+    Number(repair?.repairingPrice || 0) -
+    Number(repair?.advance || 0);
+
+  const html = `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Repair Receipt</title>
+
+    <style>
+      body { font-family: Arial; padding: 30px; }
+      .receipt { max-width:700px; margin:auto; border:2px solid #000; padding:25px; text-align:center; }
+      .logo { width:100px; margin-bottom:10px; }
+      .company-name { font-size:26px; font-weight:bold; }
+      .address { font-size:14px; color:#555; margin-bottom:20px; }
+      .title { font-size:20px; font-weight:bold; margin:20px 0; border-top:1px solid #ccc; border-bottom:1px solid #ccc; padding:10px; }
+      .row { text-align:left; margin:8px 0; }
+      .label { font-weight:bold; }
+    </style>
+  </head>
+
+  <body>
+    <div class="receipt">
+
+      <img class="logo" src="/logo-removebg-preview.png" />
+
+      <div class="company-name">New Armeco Electronics</div>
+      <div class="address">Regal Cinema, Sheikhupura</div>
+
+      <div class="title">Repair Receipt</div>
+
+      <div class="row"><span class="label">Job No:</span> ${repair?.jobNo || "-"}</div>
+      <div class="row"><span class="label">Date:</span> ${new Date().toLocaleString()}</div>
+      <div class="row"><span class="label">Customer:</span> ${repair?.customerName || "-"}</div>
+      <div class="row"><span class="label">Phone:</span> ${repair?.phoneNo || "-"}</div>
+      <div class="row"><span class="label">Brand:</span> ${repair?.brand || "-"}</div>
+      <div class="row"><span class="label">Model:</span> ${repair?.modelNo || "-"}</div>
+      <div class="row"><span class="label">Serial:</span> ${repair?.serialNo || "-"}</div>
+      <div class="row"><span class="label">Issue:</span> ${repair?.issueDescription || "-"}</div>
+      <div class="row"><span class="label">Price:</span> Rs ${repair?.repairingPrice || 0}</div>
+      <div class="row"><span class="label">Advance:</span> Rs ${repair?.advance || 0}</div>
+      <div class="row"><span class="label">Remaining:</span> Rs ${leftMoney}</div>
+
+    </div>
+
+    <script>
+      setTimeout(() => {
+        window.print();
+        window.onafterprint = () => window.close();
+      }, 600);
+    </script>
+
+  </body>
+  </html>
+  `;
+
+  printWindow.document.open();
+  printWindow.document.write(html);
+  printWindow.document.close();
+
+  // 🔥 force focus (important for Chrome blank issue fix)
+  printWindow.focus();
+};
+
   const [form, setForm] = useState({
     modelNo: "",
     serialNo: "",
@@ -36,7 +110,12 @@ function AddRepair() {
       //calling api for to create repair
       const data = await createRepair(payload);
 
-      setMessage(`Repair created! Job No: ${data.repair?.jobNo || ""}`);
+      const createdRepair = data?.repair || data;
+      setMessage(`Repair created! Job No: ${createdRepair?.jobNo || ""}`);
+
+      // open print receipt after successful creation
+      if (createdRepair) openPrintWindow(createdRepair);
+
       setForm({
         modelNo: "",
         serialNo: "",
