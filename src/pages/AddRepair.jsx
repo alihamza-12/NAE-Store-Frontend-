@@ -3,18 +3,17 @@ import { createRepair } from "../../api/lcd-repairs";
 
 function AddRepair() {
   const openPrintWindow = (repair) => {
-  const printWindow = window.open("", "_blank", "width=900,height=700");
+    const printWindow = window.open("", "_blank", "width=900,height=700");
 
-  if (!printWindow) {
-    alert("Please allow popups for printing");
-    return;
-  }
+    if (!printWindow) {
+      alert("Please allow popups for printing");
+      return;
+    }
 
-  const leftMoney =
-    Number(repair?.repairingPrice || 0) -
-    Number(repair?.advance || 0);
+    const leftMoney =
+      Number(repair?.repairingPrice || 0) - Number(repair?.advance || 0);
 
-  const html = `
+    const html = `
   <!DOCTYPE html>
   <html>
   <head>
@@ -40,6 +39,23 @@ function AddRepair() {
 
       <div class="company-name">New Armeco Electronics</div>
       <div class="address">Regal Cinema, Sheikhupura</div>
+      <div class="address">Regal Cinema, Sheikhupura</div>
+
+      <div style="font-size:11px; color:#444; margin-top:8px; line-height:1.4;">
+        دوران ریپیرنگ پینل کے ٹوٹنے یا حالت تبدیل ہو جانے پر کمپنی ذمہ دار نہ ہوگی۔
+      </div>
+
+      <div style="font-size:11px; color:#444; margin-top:4px; line-height:1.4;">
+        ریپیرنگ کیلئے دیا ہوا سامان 1 ماہ میں واپس لے جائیں بعد میں کمپنی ذمہ دار نہ ہوگی۔
+      </div>
+
+      <div style="font-size:11px; color:#444; margin-top:8px; line-height:1.4;">
+        During the repair process, the company will not be held responsible if the panel breaks or its condition changes.
+      </div>
+
+      <div style="font-size:11px; color:#444; line-height:1.4;">
+        Please collect any items given for repair within 1 month; after this period, the company will not be held responsible.
+      </div>
 
       <div class="title">Repair Receipt</div>
 
@@ -68,13 +84,13 @@ function AddRepair() {
   </html>
   `;
 
-  printWindow.document.open();
-  printWindow.document.write(html);
-  printWindow.document.close();
+    printWindow.document.open();
+    printWindow.document.write(html);
+    printWindow.document.close();
 
-  // 🔥 force focus (important for Chrome blank issue fix)
-  printWindow.focus();
-};
+    // 🔥 force focus (important for Chrome blank issue fix)
+    printWindow.focus();
+  };
 
   const [form, setForm] = useState({
     modelNo: "",
